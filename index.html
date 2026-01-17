@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Saját Magyar Nemzetünk Közössége</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f1f1;
+            color: #222;
+        }
+
+        header {
+            background: #1c1c1c;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            background: #2e2e2e;
+            padding: 15px;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        nav button:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .page {
+            display: none;
+            animation: fade 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .review {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.1);
+        }
+
+        .review span {
+            font-weight: bold;
+        }
+
+        .discord-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 15px 35px;
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        footer {
+            background: #1c1c1c;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        @keyframes fade {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Saját Magyar Nemzetünk Közössége</h1>
+    <p>Magyar Discord közösség – összetartás, tisztelet, normális vibe 🇭🇺</p>
+</header>
+
+<nav>
+    <button onclick="showPage('home')">Főoldal</button>
+    <button onclick="showPage('about')">Rólunk</button>
+    <button onclick="showPage('reviews')">Rólunk mondták</button>
+    <button onclick="showPage('aboutme')">Rólam</button>
+    <button onclick="showPage('rules')">Szabályzat</button>
+    <button onclick="showPage('owners')">Tulajok</button>
+    <button onclick="showPage('join')">Csatlakozás</button>
+</nav>
+
+<main>
+
+    <div id="home" class="page active">
+        <h2>Üdv nálunk 👋</h2>
+        <p>
+            A Saját Magyar Nemzetünk Közössége egy olyan magyar Discord szerver,
+            ahol a cél egy összetartó, barátságos és hosszú távon működő közösség.
+            Itt mindenki találhat magának társaságot,
+            legyen szó beszélgetésről, játékról vagy csak lazulásról.
+        </p>
+    </div>
+
+    <div id="about" class="page">
+        <h2>Rólunk</h2>
+        <p>
+            A szerver azért jött létre, hogy legyen egy hely,
+            ahol a magyarok normális környezetben tudnak beszélgetni.
+            Nálunk fontos a tisztelet, a kulturált kommunikáció
+            és az, hogy mindenki jól érezze magát.
+        </p>
+        <p>
+            A közösséget aktívan fejlesztjük,
+            figyelünk a visszajelzésekre,
+            és folyamatosan dolgozunk azon,
+            hogy a szerver egyre jobb legyen.
+        </p>
+    </div>
+
+    <div id="reviews" class="page">
+        <h2>Rólunk mondták 💬</h2>
+
+        <div class="review">
+            <span>Ceglédi Máté</span><br>
+            „Nagyon ritka manapság egy ilyen összetartó magyar Discord szerver.
+            Itt tényleg figyelnek a rendre,
+            a közösség barátságos,
+            és az adminok is segítőkészek.”
+        </div>
+
+        <div class="review">
+            <span>Kovács Ádám</span><br>
+            „Már több szerveren is voltam,
+            de ez az egyik legkorrektebb.
+            Nincs felesleges balhé,
+            mindenki normálisan áll a másikhoz.”
+        </div>
+
+        <div class="review">
+            <span>Szabó Bence</span><br>
+            „Látszik, hogy a tulajok komolyan veszik a szervert.
+            Folyamatosan fejlődik,
+            és új tagként is könnyű beilleszkedni.”
+        </div>
+
+        <div class="review">
+            <span>Nagy Levente</span><br>
+            „Ha valaki egy normális magyar közösséget keres,
+            ahol nincs toxic viselkedés,
+            akkor ezt a szervert nyugodtan ajánlom.”
+        </div>
+    </div>
+
+    <div id="aboutme" class="page">
+        <h2>Rólam</h2>
+        <p>
+            Az egyik alapító vagyok,
+            célom egy stabil és aktív közösség felépítése.
+            Fontos számomra,
+            hogy minden tag biztonságban
+            és jól érezze magát a szerveren.
+        </p>
+    </div>
+
+    <div id="rules" class="page">
+        <h2>Szabályzat</h2>
+        <ul>
+            <li>Tiszteld a többi tagot.</li>
+            <li>Tilos a spam, reklám és a toxic viselkedés.</li>
+            <li>Sértő, rasszista tartalom azonnali tiltást von maga után.</li>
+            <li>Voice chaten is kötelező a kulturált viselkedés.</li>
+            <li>Az adminok döntése végleges.</li>
+        </ul>
+    </div>
+
+    <div id="owners" class="page">
+        <h2>Tulajdonosok</h2>
+
+        <p><strong>Beni 👑</strong> – alapító, fő irányítás</p>
+        <p><strong>Bence 👑</strong> – fejlesztés, közösségépítés</p>
+        <p><strong>Áron 👑</strong> – működtetés, rend fenntartása</p>
+
+        <p>
+            A tulajdonosok együtt dolgoznak azon,
+            hogy a Saját Magyar Nemzetünk Közössége
+            hosszú távon is egy erős és aktív szerver maradjon.
+        </p>
+    </div>
+
+    <div id="join" class="page">
+        <h2>Csatlakozás</h2>
+        <a class="discord-btn" href="https://discord.gg/ppdCdak8X" target="_blank">
+            Csatlakozás Discordhoz
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    © 2026 Saját Magyar Nemzetünk Közössége
+</footer>
+
+<script>
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
