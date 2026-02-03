@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas AI</title>
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+header {
+    padding: 15px;
+    text-align: center;
+    background: #111;
+    font-size: 22px;
+    font-weight: bold;
+}
+#chat {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+.msg {
+    margin: 8px 0;
+}
+.user { color: #4da6ff; }
+.atlas { color: #00ff9c; }
+footer {
+    display: flex;
+    padding: 10px;
+    background: #111;
+}
+input {
+    flex: 1;
+    padding: 10px;
+    background: #1a1a1a;
+    border: none;
+    color: white;
+}
+button {
+    padding: 10px 15px;
+    background: #00ff9c;
+    border: none;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<header>🤖 Atlas AI</header>
+
+<div id="chat">
+    <div class="msg atlas">Atlas: Szia! Én vagyok az Atlas AI 😎</div>
+</div>
+
+<footer>
+    <input id="input" placeholder="Írj Atlasnak..." />
+    <button onclick="send()">Küld</button>
+</footer>
+
+<script>
+function send() {
+    const input = document.getElementById("input");
+    const chat = document.getElementById("chat");
+
+    if (!input.value) return;
+
+    chat.innerHTML += `<div class="msg user">Te: ${input.value}</div>`;
+    chat.innerHTML += `<div class="msg atlas">Atlas: Ezt még tanulom, de hamarosan okos leszek 🔥</div>`;
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
