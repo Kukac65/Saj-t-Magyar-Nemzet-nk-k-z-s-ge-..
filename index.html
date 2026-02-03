@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas AI - Teljes AI Chat</title>
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* ALAP STÍLUSOK */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #16213e 100%);
+            color: #f0f0f0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* APP KONTÉNER */
+        .app-container {
+            max-width: 500px;
+            height: 100vh;
+            margin: 0 auto;
+            background: rgba(25, 25, 35, 0.95);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* FEJLÉC */
+        .header {
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        /* CHAT TERÜLET */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #1a1a2e;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #0066ff, #0052d4);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        /* TYPING INDICATOR */
+        .typing-indicator {
+            display: none;
+            gap: 5px;
+            padding: 15px;
+            background: #16213e;
+            border-radius: 18px;
+            width: fit-content;
+            border: 1px solid #0f3460;
+            margin-top: 10px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #0066ff;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+        
+        /* INPUT TERÜLET */
+        .input-container {
+            padding: 20px;
+            background: #16213e;
+            border-top: 1px solid #0f3460;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        #messageInput {
+            flex: 1;
+            padding: 15px 20px;
+            background: #0f3460;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        #messageInput:focus {
+            border-color: #0066ff;
+        }
+        
+        #sendBtn {
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        
+        #sendBtn:hover {
+            transform: scale(1.05);
+        }
+        
+        #sendBtn:active {
+            transform: scale(0.95);
+        }
+        
+        /* QUICK ACTIONS */
+        .quick-actions {
+            padding: 15px;
+            background: #16213e;
+            border-top: 1px solid #0f3460;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+        
+        .quick-btn {
+            padding: 12px 20px;
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .quick-btn:hover {
+            background: rgba(0, 102, 255, 0.2);
+            border-color: #0066ff;
+        }
+        
+        /* KÓD BLOKKOK */
+        .code-block {
+            background: #0a1929;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .app-container {
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .logo {
+                font-size: 28px;
+            }
+            
+            .chat-container {
+                padding: 15px;
+            }
+            
+            .message {
+                max-width: 90%;
+                padding: 12px;
+            }
+            
+            .input-container {
+                padding: 15px;
+            }
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #0066ff;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0052d4;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- FEJLÉC -->
+        <div class="header">
+            <div class="logo">ATLAS AI</div>
+            <div class="subtitle">Intelligens Asszisztens</div>
+            <div class="status">Online</div>
+        </div>
+        
+        <!-- CHAT TERÜLET -->
+        <div class="chat-container" id="chatContainer">
+            <!-- ÜZENETEK JÖNNEK IDE -->
+        </div>
+        
+        <!-- TYPING INDICATOR -->
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+        
+        <!-- QUICK ACTIONS -->
+        <div class="quick-actions">
+            <button class="quick-btn" data-action="hello">👋 Üdvözlés</button>
+            <button class="quick-btn" data-action="code">💻 Kód kérés</button>
+            <button class="quick-btn" data-action="joke">😂 Vicc</button>
+            <button class="quick-btn" data-action="help">❓ Segítség</button>
+            <button class="quick-btn" data-action="clear">🗑️ Törlés</button>
+        </div>
+        
+        <!-- INPUT TERÜLET -->
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Írd ide az üzeneted...">
+            <button id="sendBtn">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // ATLAS AI CORE SYSTEM
+        class AtlasAI {
+            constructor() {
+                this.chatHistory = JSON.parse(localStorage.getItem('atlas_chats')) || [];
+                this.currentModel = 'atlas-pro';
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.loadChatHistory();
+                this.showWelcomeMessage();
+            }
+            
+            setupEventListeners() {
+                // Küldés gomb
+                document.getElementById('sendBtn').addEventListener('click', () => this.sendMessage());
+                
+                // Enter billentyű
+                document.getElementById('messageInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                
+                // Gyorsgombok
+                document.querySelectorAll('.quick-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.handleQuickAction(btn.dataset.action));
+                });
+            }
+            
+            sendMessage() {
+                const input = document.getElementById('messageInput');
+                const message = input.value.trim();
+                
+                if (!message) return;
+                
+                // Felhasználó üzenete
+                this.addMessage(message, 'user');
+                input.value = '';
+                
+                // AI válasz
+                setTimeout(() => {
+                    this.showTyping();
+                    setTimeout(() => {
+                        this.hideTyping();
+                        const response = this.generateResponse(message);
+                        this.addMessage(response, 'ai');
+                        this.saveToHistory(message, response);
+                    }, 1000 + Math.random() * 1000);
+                }, 300);
+            }
+            
+            addMessage(text, sender) {
+                const chatContainer = document.getElementById('chatContainer');
+                const typingIndicator = document.getElementById('typingIndicator');
+                
+                // Typing indicator eltávolítása
+                if (typingIndicator.style.display === 'flex') {
+                    typingIndicator.style.display = 'none';
+                }
+                
+                // Üzenet létrehozása
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                // Kód blokkok kezelése
+                let formattedText = text;
+                const codeBlocks = text.match(/```[\s\S]*?```/g) || [];
+                
+                if (codeBlocks.length > 0) {
+                    formattedText = '';
+                    let tempText = text;
+                    
+                    codeBlocks.forEach((block, index) => {
+                        const placeholder = `__CODE_BLOCK_${index}__`;
+                        tempText = tempText.replace(block, placeholder);
+                        
+                        const code = block.replace(/```(\w+)?\n?/, '').replace(/```$/, '');
+                        const language = block.match(/```(\w+)/)?.[1] || '';
+                        
+                        const codeDiv = document.createElement('div');
+                        codeDiv.className = 'code-block';
+                        codeDiv.textContent = code;
+                        
+                        const beforeText = tempText.split(placeholder)[0];
+                        if (beforeText) {
+                            messageDiv.appendChild(document.createTextNode(beforeText));
+                        }
+                        
+                        messageDiv.appendChild(codeDiv);
+                        tempText = tempText.split(placeholder)[1] || '';
+                    });
+                    
+                    if (tempText) {
+                        messageDiv.appendChild(document.createTextNode(tempText));
+                    }
+                } else {
+                    messageDiv.textContent = text;
+                }
+                
+                // Időbélyeg
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                timeDiv.textContent = new Date().toLocaleTimeString('hu-HU', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                messageDiv.appendChild(timeDiv);
+                
+                chatContainer.appendChild(messageDiv);
+                
+                // Görgetés aljára
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            showTyping() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                typingIndicator.style.display = 'flex';
+                document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+            }
+            
+            hideTyping() {
+                document.getElementById('typingIndicator').style.display = 'none';
+            }
+            
+            generateResponse(userMessage) {
+                const message = userMessage.toLowerCase();
+                
+                // Üdvözlés
+                if (this.isGreeting(message)) {
+                    return this.getGreetingResponse();
+                }
+                
+                // Kód kérés
+                if (this.isCodeRequest(message)) {
+                    return this.getCodeResponse(message);
+                }
+                
+                // Vicc kérés
+                if (this.isJokeRequest(message)) {
+                    return this.getJokeResponse();
+                }
+                
+                // Segítség kérés
+                if (this.isHelpRequest(message)) {
+                    return this.getHelpResponse();
+                }
+                
+                // Általános válasz
+                return this.getGeneralResponse(userMessage);
+            }
+            
+            isGreeting(message) {
+                const greetings = ['szia', 'hello', 'helló', 'üdv', 'szervusz', 'jó napot'];
+                return greetings.some(greet => message.includes(greet));
+            }
+            
+            getGreetingResponse() {
+                const responses = [
+                    "👋 Szia! Én vagyok Atlas AI, az intelligens asszisztensed. Hogyan segíthetek?",
+                    "Hello! 😊 Atlas AI vagyok, készen állok hogy segítsek!",
+                    "Üdvözöllek! 🎯 Atlas AI asszisztens vagyok. Miben tehetek ma szolgálatodra?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            isCodeRequest(message) {
+                const keywords = ['python', 'javascript', 'html', 'css', 'kód', 'program', 'programozás'];
+                return keywords.some(keyword => message.includes(keyword));
+            }
+            
+            getCodeResponse(message) {
+                if (message.includes('python')) {
+                    return `Itt van egy Python példa:\n\n\`\`\`python\ndef atlas_hello(name):\n    print(f"Szia {name}! Én vagyok Atlas AI.")\n    return "Készen állok segíteni!"\n\n# Használat:\nresult = atlas_hello("Felhasználó")\nprint(result)\n\`\`\``;
+                }
+                
+                return "Milyen programozási nyelven szeretnél kódot látni? Tudok segíteni Pythonban, JavaScriptben, HTML/CSS-ben és más nyelvekben is!";
+            }
+            
+            isJokeRequest(message) {
+                const keywords = ['vicc', 'nevetni', 'nevess', 'poén'];
+                return keywords.some(keyword => message.includes(keyword));
+            }
+            
+            getJokeResponse() {
+                const jokes = [
+                    "Miért nem mehet a számítógép az orvoshoz?\nMert már van vírusa! 😄",
+                    "Mit mond a 0 a 8-nak?\nSzép öv! 🤣",
+                    "Miért nem lehet megijeszteni egy programozót?\nMert mindig figyelmeztetést kap! 😂"
+                ];
+                return jokes[Math.floor(Math.random() * jokes.length)];
+            }
+            
+            isHelpRequest(message) {
+                const keywords = ['segítség', 'segíts', 'help', 'kérem'];
+                return keywords.some(keyword => message.includes(keyword));
+            }
+            
+            getHelpResponse() {
+                return "🎯 **Atlas AI segítség:**\n• Kérdezz bátran bármiről\n• Kódot is tudok írni\n• Vicceket mesélek\n• Információkat adok\n• Segítek problémákat megoldani\n\nÍrj nekem, és segítek!";
+            }
+            
+            getGeneralResponse(message) {
+                const responses = [
+                    `Érdekes kérdés: "${message}". Atlas AI-ként pontos választ adok.`,
+                    `Köszönöm a kérdést! "${message}" témában részletes információkat tudok megosztani.`,
+                    `Jó kérdés! Hadd gondolkozzak a "${message}" témán...`,
+                    `Erről a témáról fontos dolgokat tudok elmondani: ${message}`
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            handleQuickAction(action) {
+                const actions = {
+                    'hello': 'Szia Atlas! Hogy működsz?',
+                    'code': 'Írj nekem egy Python kódot',
+                    'joke': 'Mesélj egy viccet!',
+                    'help': 'Mire vagy képes?',
+                    'clear': this.clearChat.bind(this)
+                };
+                
+                if (action === 'clear') {
+                    actions[action]();
+                } else {
+                    document.getElementById('messageInput').value = actions[action];
+                    document.getElementById('messageInput').focus();
+                }
+            }
+            
+            clearChat() {
+                if (confirm('Biztosan törlöd az összes üzenetet?')) {
+                    document.getElementById('chatContainer').innerHTML = '';
+                    this.chatHistory = [];
+                    localStorage.removeItem('atlas_chats');
+                    this.showWelcomeMessage();
+                }
+            }
+            
+            showWelcomeMessage() {
+                setTimeout(() => {
+                    this.addMessage("👋 Üdvözöllek az Atlas AI chatben! Kérdezz bátran bármiről.", 'ai');
+                }, 1000);
+            }
+            
+            saveToHistory(userMessage, aiResponse) {
+                const chat = {
+                    user: userMessage,
+                    ai: aiResponse,
+                    timestamp: new Date().toISOString(),
+                    model: this.currentModel
+                };
+                
+                this.chatHistory.push(chat);
+                
+                // Csak utolsó 50 üzenet tárolása
+                if (this.chatHistory.length > 50) {
+                    this.chatHistory = this.chatHistory.slice(-50);
+                }
+                
+                localStorage.setItem('atlas_chats', JSON.stringify(this.chatHistory));
+          
