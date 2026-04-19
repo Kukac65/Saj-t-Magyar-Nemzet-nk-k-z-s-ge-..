@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyscout Style Player Profile - Unti Benett</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: white; margin: 0; padding: 0; }
+        .header { background-color: #d40000; padding: 20px; text-align: center; border-bottom: 4px solid #fff; }
+        .container { max-width: 900px; margin: 20px auto; padding: 20px; background-color: #262626; border-radius: 10px; }
+        .profile-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+        .photo-placeholder { width: 150px; height: 150px; background-color: #444; border-radius: 50%; display: flex; align-items: center; text-center; border: 3px solid #d40000; overflow: hidden; }
+        .stats-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        .stats-table td, .stats-table th { padding: 12px; border: 1px solid #444; text-align: left; }
+        .stats-table th { background-color: #333; color: #d40000; }
+        .video-section { margin-top: 30px; background: #000; padding: 15px; border-radius: 8px; text-align: center; }
+        .tag { background: #d40000; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+        .team-list { margin-top: 20px; font-size: 14px; color: #ccc; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>SCOUTING DATABASE - GYŐR-MOSON-SOPRON</h1>
+    <p>U13 - U14 Utánpótlás Figyelő Rendszer</p>
+</div>
+
+<div class="container">
+    <div class="profile-flex">
+        <div class="photo-placeholder">
+            <p style="padding: 10px;">FOTÓ HELYE</p>
+        </div>
+        <div>
+            <h2>UNTI BENETT <span class="tag">PROSPECT</span></h2>
+            <p><strong>Születési év:</strong> 2014</p>
+            <p><strong>Poszt:</strong> Jobb középpályás (RM / RW)</p>
+            <p><strong>Csapat:</strong> Megye III. Utánpótlás (Gy-M-S)</p>
+        </div>
+    </div>
+
+    <table class="stats-table">
+        <tr>
+            <th>Fizikai adatok</th>
+            <th>Érték</th>
+            <th>Technikai mutatók</th>
+            <th>Értékelés</th>
+        </tr>
+        <tr>
+            <td>Magasság</td>
+            <td>150 cm</td>
+            <td>Lövőerő</td>
+            <td>★★★★☆</td>
+        </tr>
+        <tr>
+            <td>Súly</td>
+            <td>36 kg</td>
+            <td>Dinamika</td>
+            <td>★★★★★</td>
+        </tr>
+        <tr>
+            <td>Korosztály</td>
+            <td>U13 / U14</td>
+            <td>Pontosság</td>
+            <td>★★★☆☆</td>
+        </tr>
+    </table>
+
+    <div class="video-section">
+        <h3>LÖVÉSTECHNIKA ELEMZÉS (CLIPS)</h3>
+        <p style="color: #888;">[Ide töltsd fel a videódat a tárhelyeden]</p>
+        <div style="background: #333; height: 200px; display: flex; align-items: center; justify-content: center; border: 1px dashed #666;">
+            A videó megtekintéséhez csatold a 1000002583.mp4 fájlt.
+        </div>
+    </div>
+
+    <div class="team-list">
+        <h3>Vármegyei Adatbázis (Gy-M-S Megye 3):</h3>
+        <p>A rendszer tartalmazza az összes U13-U14 csapatot: Győr környéki klubok, Soproni régió, Mosonmagyaróvári utánpótlás bázisok.</p>
+        <button onclick="alert('Regisztráció hamarosan megnyílik a megyei játékosoknak!')" style="padding: 10px; cursor: pointer; background: #d40000; color: white; border: none; border-radius: 5px;">Játékos hozzáadása</button>
+    </div>
+</div>
+
+</body>
+</html>
